@@ -1,4 +1,5 @@
 import csv
+import re
 import uuid
 
 import psycopg2
@@ -39,15 +40,15 @@ class PlayersPipeline:
                 "url",
                 "name",
                 "full_name",
-                "dob",
+                "date_of_birth",
                 "age",
                 "place_of_birth",
                 "country_of_birth",
                 "positions",
                 "current_club",
                 "national_team",
-                "appearances",
-                "goals",
+                "appearances_in_current_club",
+                "goals_in_current_club",
                 "timestamp",
             ],
             delimiter=";",
@@ -65,8 +66,9 @@ class PlayersPipeline:
     def process_item(self, item, spider):
         player_id = uuid.uuid5(uuid.NAMESPACE_URL, item["url"])
         item["id"] = str(player_id)
-        self.save_to_csv(item)
-        self.save_to_db(item)
+        cleaned_item = self.strip_references(item)
+        self.save_to_csv(cleaned_item)
+        self.save_to_db(cleaned_item)
         return item
 
     def save_to_db(self, item):
@@ -79,3 +81,15 @@ class PlayersPipeline:
     def save_to_csv(self, item):
         self.csv_writer.writerow(ItemAdapter(item).asdict())
         self.csv_file.flush()
+
+    @staticmethod
+    def strip_references(player_info):
+        """
+        Remove citation references from string values
+        """
+        for key, value in player_info.items():
+            if isinstance(value, str):
+                player_info[key] = re.sub(r"\[\d+\]", "", value).strip()
+            elif isinstance(value, list):
+                player_info[key] = [re.sub(r"\[\d+\]", "", v).strip() for v in value]
+        return player_info

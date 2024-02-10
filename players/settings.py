@@ -12,7 +12,6 @@ BOT_NAME = "players"
 SPIDER_MODULES = ["players.spiders"]
 NEWSPIDER_MODULE = "players.spiders"
 
-DB_CONNECTION_STRING = "dbname=players user=postgres password=postgres host=localhost"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = "players (+http://www.yourdomain.com)"
@@ -63,9 +62,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-    "players.pipelines.PlayersPipeline": 100,
-}
+# ITEM_PIPELINES = {
+#     "players.pipelines.PlayersPipeline": 100,
+# }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

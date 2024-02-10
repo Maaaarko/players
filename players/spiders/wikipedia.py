@@ -68,24 +68,21 @@ class WikipediaPlayerInfoSpider(Spider):
 
         current_club_appearances, current_club_goals = self.get_player_current_club_stats(current_club_stats_elements)
 
-        raw_player_info = {
-            "url": response.url,
-            "name": name,
-            "full_name": full_name,
-            "dob": dob,
-            "age": age,
-            "place_of_birth": city,
-            "country_of_birth": country,
-            "positions": positions_list,
-            "current_club": current_club,
-            "national_team": national_team,
-            "appearances": current_club_appearances,
-            "goals": current_club_goals,
-            "timestamp": current_timestamp,
-        }
-        player_info = self.strip_references(raw_player_info)
-
-        yield PlayerInfoItem(**player_info)
+        yield PlayerInfoItem(
+            url=response.url,
+            name=name,
+            full_name=full_name,
+            date_of_birth=dob,
+            age=age,
+            place_of_birth=city,
+            country_of_birth=country,
+            positions=positions_list,
+            current_club=current_club,
+            national_team=national_team,
+            appearances_in_current_club=current_club_appearances,
+            goals_in_current_club=current_club_goals,
+            timestamp=current_timestamp,
+        )
 
     @staticmethod
     def get_player_name(player_card):
@@ -151,15 +148,3 @@ class WikipediaPlayerInfoSpider(Spider):
             except ValueError:
                 pass
         return current_club_appearances, current_club_goals
-
-    @staticmethod
-    def strip_references(player_info):
-        """
-        Remove citation references from string values
-        """
-        for key, value in player_info.items():
-            if isinstance(value, str):
-                player_info[key] = re.sub(r"\[\d+\]", "", value).strip()
-            elif isinstance(value, list):
-                player_info[key] = [re.sub(r"\[\d+\]", "", v).strip() for v in value]
-        return player_info

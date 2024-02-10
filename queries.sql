@@ -22,5 +22,9 @@ ORDER BY total_players DESC, average_age DESC, average_appearances DESC;
 SELECT players.name, COUNT(p2.name) younger_players_with_more_appearances
 FROM players
 JOIN players AS p2 ON players.id != p2.id
-WHERE players.current_club = 'Barcelona' AND players.age > p2.age AND players.id != p2.id AND players.positions && p2.positions AND p2.appearances_in_current_club > players.appearances_in_current_club
+WHERE players.current_club = 'Barcelona' 
+    AND players.age > p2.age 
+    AND players.id != p2.id 
+    AND players.positions && p2.positions 
+    AND p2.appearances_in_current_club > players.appearances_in_current_club
 GROUP BY players.name;

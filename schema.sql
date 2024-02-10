@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS players (
     uri TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
     full_name TEXT NOT NULL,
-    dob DATE,
+    date_of_birth DATE,
     age INT,
     place_of_birth TEXT,
     country_of_birth TEXT,
