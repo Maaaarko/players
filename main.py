@@ -11,12 +11,10 @@ def load_start_urls(file_path):
         return [url.strip() for url in f.readlines()]
 
 
-def process(file_path, output_file_path):
+def start_process(file_path, output_file_path):
     start_urls = load_start_urls(file_path)
 
-    db_connection_string = (
-        os.environ.get("DB_CONNECTION_STRING") or "host=localhost dbname=players user=postgres password=postgres"
-    )
+    db_connection_string = "host=localhost dbname=players user=postgres password=postgres"  # hardcoded for simplicity
     settings = {
         "OUTPUT_FILE": output_file_path,
         "DB_CONNECTION_STRING": db_connection_string,
@@ -34,4 +32,4 @@ if __name__ == "__main__":
     if not os.path.isfile(file_path):
         print(f"File not found: {file_path}")
         sys.exit(1)
-    process(file_path, output_file_path)
+    start_process(file_path, output_file_path)

@@ -46,19 +46,17 @@ def transform_keys(player_data):
     }
 
 
-def main():
-    db_connection_string = (
-        os.environ.get("DB_CONNECTION_STRING") or "host=localhost dbname=players user=postgres password=postgres"
-    )
+def start_process():
+    db_connection_string = "host=localhost dbname=players user=postgres password=postgres"  # hardcoded for simplicity
     connection = psycopg2.connect(dsn=db_connection_string)
     cursor = connection.cursor()
 
     for raw_player_data in get_players_data(file_path):
         if not raw_player_data["Name"]:
             continue
-        cleaned_player_data = transform_keys(clean_data(raw_player_data))
+        player_data = transform_keys(clean_data(raw_player_data))
         try:
-            cursor.execute(INSERT_PLAYER_INFO, cleaned_player_data)
+            cursor.execute(INSERT_PLAYER_INFO, player_data)
             connection.commit()
         except Exception as e:
             print(f"Error inserting player info: {e}")
@@ -69,4 +67,4 @@ if __name__ == "__main__":
     if not os.path.isfile(file_path):
         print(f"File not found: {file_path}")
         sys.exit(1)
-    main()
+    start_process()
