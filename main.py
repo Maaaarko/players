@@ -27,6 +27,9 @@ def start_process(file_path, output_file_path):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("Usage: python main.py <file_path> <output_file_path>")
+        sys.exit(1)
     file_path = sys.argv[1]
     output_file_path = sys.argv[2]
     if not os.path.isfile(file_path):

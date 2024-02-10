@@ -63,6 +63,9 @@ def start_process():
 
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: import_data.py <file_path>")
+        sys.exit(1)
     file_path = sys.argv[1]
     if not os.path.isfile(file_path):
         print(f"File not found: {file_path}")
