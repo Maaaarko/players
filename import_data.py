@@ -9,6 +9,22 @@ import psycopg2
 from queries import INSERT_PLAYER_INFO
 
 
+def start_process():
+    db_connection_string = "host=localhost dbname=players user=postgres password=postgres"  # hardcoded for simplicity
+    connection = psycopg2.connect(dsn=db_connection_string)
+    cursor = connection.cursor()
+
+    for raw_player_data in get_players_data(file_path):
+        if not raw_player_data["Name"]:
+            continue
+        player_data = transform_keys(clean_data(raw_player_data))
+        try:
+            cursor.execute(INSERT_PLAYER_INFO, player_data)
+            connection.commit()
+        except Exception as e:
+            print(f"Error inserting player info: {e}")
+
+
 def get_players_data(file_path):
     with open(file_path, "r", encoding="utf-8-sig") as f:
         csv_reader = csv.DictReader(f, delimiter=";")
@@ -46,22 +62,6 @@ def transform_keys(player_data):
     }
 
 
-def start_process():
-    db_connection_string = "host=localhost dbname=players user=postgres password=postgres"  # hardcoded for simplicity
-    connection = psycopg2.connect(dsn=db_connection_string)
-    cursor = connection.cursor()
-
-    for raw_player_data in get_players_data(file_path):
-        if not raw_player_data["Name"]:
-            continue
-        player_data = transform_keys(clean_data(raw_player_data))
-        try:
-            cursor.execute(INSERT_PLAYER_INFO, player_data)
-            connection.commit()
-        except Exception as e:
-            print(f"Error inserting player info: {e}")
-
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: import_data.py <file_path>")
@@ -71,3 +71,4 @@ if __name__ == "__main__":
         print(f"File not found: {file_path}")
         sys.exit(1)
     start_process()
+    print("Data imported successfully")
