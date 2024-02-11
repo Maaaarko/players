@@ -36,7 +36,6 @@ class WikipediaPlayerInfoSpider(Spider):
         self.start_urls = start_urls
 
     def parse(self, response):
-        # current utc timestamp
         current_timestamp = datetime.utcnow().isoformat()
 
         player_card = response.xpath(PLAYER_CARD_XPATH)
