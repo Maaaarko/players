@@ -11,7 +11,7 @@
 1. Run `docker-compose up` in the root directory of the project to start the database.
 2. The database is exposed on local port 5432, with the username and password set to `postgres`.
 3. Connect to the database using `psql` command-line tool or database management tool of your choice. Example: `psql -h localhost -U postgres -d players`
-4. Run the queries in the schema.sql file to create the schema.
+4. Run the queries from the schema.sql file to create the schema.
 
 ## Running the application
 
