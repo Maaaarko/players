@@ -31,18 +31,6 @@ def get_players_data(file_path):
         yield from csv_reader
 
 
-def clean_data(player_data):
-    player_data["Position"] = player_data["Position"].split(", ")
-    for key in player_data:
-        if player_data[key] == "":
-            player_data[key] = None
-    if player_data["Date of birth"]:
-        player_data["Date of birth"] = date_parse(player_data["Date of birth"]).date()
-    if not player_data["Full name"]:
-        player_data["Full name"] = player_data["Name"]
-    return player_data
-
-
 def transform_keys(player_data):
     return {
         "id": player_data["PlayerID"],
@@ -60,6 +48,18 @@ def transform_keys(player_data):
         "goals_in_current_club": None,
         "timestamp": None,
     }
+
+
+def clean_data(player_data):
+    player_data["Position"] = player_data["Position"].split(", ")
+    for key in player_data:
+        if player_data[key] == "":
+            player_data[key] = None
+    if player_data["Date of birth"]:
+        player_data["Date of birth"] = date_parse(player_data["Date of birth"]).date()
+    if not player_data["Full name"]:
+        player_data["Full name"] = player_data["Name"]
+    return player_data
 
 
 if __name__ == "__main__":

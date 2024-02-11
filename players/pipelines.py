@@ -71,16 +71,16 @@ class PlayersPipeline:
         self.save_to_db(cleaned_item)
         return item
 
+    def save_to_csv(self, item):
+        self.csv_writer.writerow(ItemAdapter(item).asdict())
+        self.csv_file.flush()
+
     def save_to_db(self, item):
         try:
             self.cursor.execute(INSERT_PLAYER_INFO, item)
             self.connection.commit()
         except Exception as e:
             print(f"Error inserting player info: {e}")
-
-    def save_to_csv(self, item):
-        self.csv_writer.writerow(ItemAdapter(item).asdict())
-        self.csv_file.flush()
 
     @staticmethod
     def strip_references(player_info):
